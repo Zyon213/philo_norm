@@ -1,10 +1,28 @@
-SRC = create.c init.c join.c main.c time.c utils.c
+NAME = philo_one
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -lpthread -pthread
 
-all:
-	gcc -pthread -lpthread $(SRC) -o philo
-add:
-	gcc -pthread -lpthread -g -fsanitize=address $(SRC) -o philo
-thr:
-	gcc -pthread -lpthread -g -fsanitize=thread $(SRC) -o philo
+RM = rm -f
+FILES = create init join main time utils
+
+SRCS_DIR = ./
+SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
+
+OBJS_DIR = ./
+OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
+
+.c.o: $(SRCS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(EFLAGS) $(SRCS) -o $(NAME)
+
+all: $(NAME)
+
 clean:
-	rm -f philo
+	$(RM) $(OBJS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: clean all
